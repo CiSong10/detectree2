@@ -563,12 +563,11 @@ class MyTrainer(DefaultTrainer):
                 self.model.backbone.bottom_up.stem.conv1.weight.requires_grad = req_grad
 
     @classmethod
-    def build_evaluator(cls, cfg, dataset_name, output_folder=None):
+    def build_evaluator(cls, dataset_name, output_folder=None):
         """
         Build the evaluator for the model.
 
         Args:
-            cfg (CfgNode): Configuration object.
             dataset_name (str): Name of the dataset to evaluate.
             output_folder (str, optional): Directory to save evaluation results. Defaults to "eval".
 
@@ -578,7 +577,7 @@ class MyTrainer(DefaultTrainer):
         if output_folder is None:
             os.makedirs("eval", exist_ok=True)
             output_folder = "eval"
-        return COCOEvaluator(dataset_name, cfg, True, output_folder)
+        return COCOEvaluator(dataset_name, {"bbox", "segm"}, True, output_folder)
 
     def build_hooks(self):
         """
